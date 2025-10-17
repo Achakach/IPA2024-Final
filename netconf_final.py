@@ -1,88 +1,163 @@
 from ncclient import manager
 import xmltodict
 
+
+ROUTER_IP = "192.168.1.104"
+NETCONF_PORT = 830
+USERNAME = "admin"
+PASSWORD = "cisco"
+
 m = manager.connect(
-    host="<!!!REPLACEME with router IP address!!!>",
-    port=<!!!REPLACEME with NETCONF Port number!!!>,
-    username="admin",
-    password="cisco",
+    host= ROUTER_IP,
+    port= NETCONF_PORT,
+    username= USERNAME,
+    password= PASSWORD,
     hostkey_verify=False
     )
 
-def create():
-    netconf_config = """<!!!REPLACEME with YANG data!!!>"""
+def get_ip_and_prefix(student_id):
+    """Generates IP address and prefix based on the last 3 digits of student ID."""
+    last_three_digits = student_id[-3:]
+    x = last_three_digits[0]
+    y = last_three_digits[1:]
+    ip_address = f"172.{x}.{y}.1"
+    prefix = "24"
+    return ip_address, prefix
+
+def create(student_id):
+    ip_address, prefix = get_ip_and_prefix(student_id)
+    netconf_config = f"""
+    <config>
+      <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+        <interface>
+          <name>Loopback{student_id}</name>
+          <description>Created by NETCONF</description>
+          <type xmlns:ianaift="urn:ietf:params:xml:ns:yang:iana-if-type">ianaift:softwareLoopback</type>
+          <enabled>true</enabled>
+          <ipv4 xmlns="urn:ietf:params:xml:ns:yang:ietf-ip">
+            <address>
+              <ip>{ip_address}</ip>
+              <netmask>255.255.255.0</netmask>
+            </address>
+          </ipv4>
+        </interface>
+      </interfaces>
+    </config>
+    """
 
     try:
         netconf_reply = netconf_edit_config(netconf_config)
         xml_data = netconf_reply.xml
         print(xml_data)
         if '<ok/>' in xml_data:
-            return "<!!!REPLACEME with proper message!!!>"
-    except:
-        print("Error!")
+            return f"Interface loopback {student_id} is created successfully"
+    except Exception as e:
+            if "data-exists" in str(e):
+                return f"Cannot create: Interface loopback {student_id}"
+            return "Error: " + str(e)
 
 
-def delete():
-    netconf_config = """<!!!REPLACEME with YANG data!!!>"""
-
+def delete(student_id):
+    netconf_config = f"""
+    <config>
+      <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+        <interface operation="delete">
+          <name>Loopback{student_id}</name>
+        </interface>
+      </interfaces>
+    </config>
+    """
     try:
         netconf_reply = netconf_edit_config(netconf_config)
         xml_data = netconf_reply.xml
-        print(xml_data)
         if '<ok/>' in xml_data:
-            return "<!!!REPLACEME with proper message!!!>"
-    except:
-        print("Error!")
+           return f"Interface loopback {student_id} is deleted successfully"
+    except Exception as e:
+        if "data-missing" in str(e):
+            return f"Cannot delete: Interface loopback {student_id}"
+        return "Error: " + str(e)
 
 
-def enable():
-    netconf_config = """<!!!REPLACEME with YANG data!!!>"""
+def enable(student_id):
+    netconf_config = f"""
+    <config>
+      <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+        <interface>
+          <name>Loopback{student_id}</name>
+          <enabled>true</enabled>
+        </interface>
+      </interfaces>
+    </config>
+    """
 
     try:
+        # Check status first to return the correct message
+        if "No Interface" in status(student_id):
+            return f"Cannot enable: Interface loopback {student_id}"
+            
         netconf_reply = netconf_edit_config(netconf_config)
         xml_data = netconf_reply.xml
-        print(xml_data)
         if '<ok/>' in xml_data:
-            return "<!!!REPLACEME with proper message!!!>"
-    except:
-        print("Error!")
+            return f"Interface loopback {student_id} is enabled successfully"
+    except Exception as e:
+        return "Error: " + str(e)
 
 
-def disable():
-    netconf_config = """<!!!REPLACEME with YANG data!!!>"""
-
+def disable(student_id):
+    """Disables a Loopback interface."""
+    netconf_config = f"""
+    <config>
+      <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+        <interface>
+          <name>Loopback{student_id}</name>
+          <enabled>false</enabled>
+        </interface>
+      </interfaces>
+    </config>
+    """
     try:
+         # Check status first to return the correct message
+        if "No Interface" in status(student_id):
+            return f"Cannot shutdown: Interface loopback {student_id}"
+
         netconf_reply = netconf_edit_config(netconf_config)
         xml_data = netconf_reply.xml
-        print(xml_data)
         if '<ok/>' in xml_data:
-            return "<!!!REPLACEME with proper message!!!>"
-    except:
-        print("Error!")
+            return f"Interface loopback {student_id} is shutdowned successfully"
+    except Exception as e:
+        return "Error: " + str(e)
 
 def netconf_edit_config(netconf_config):
-    return  m.<!!!REPLACEME with the proper Netconf operation!!!>(target="<!!!REPLACEME with NETCONF Datastore!!!>", config=<!!!REPLACEME with netconf_config!!!>)
+    """Sends an edit-config operation to the device."""
+    return m.edit_config(target="running", config=netconf_config)
 
 
-def status():
-    netconf_filter = """<!!!REPLACEME with YANG data!!!>"""
-
+def status(student_id):
+    """Retrieves the status of a Loopback interface."""
+    netconf_filter = f"""
+    <filter>
+      <interfaces-state xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces-state">
+        <interface>
+          <name>Loopback{student_id}</name>
+        </interface>
+      </interfaces-state>
+    </filter>
+    """
     try:
-        # Use Netconf operational operation to get interfaces-state information
-        netconf_reply = m.<!!!REPLACEME with the proper Netconf operation!!!>(filter=<!!!REPLACEME with netconf_filter!!!>)
-        print(netconf_reply)
-        netconf_reply_dict = xmltodict.<!!!REPLACEME with the proper method!!!>(netconf_reply.xml)
+        netconf_reply = m.get(filter=netconf_filter)
+        netconf_reply_dict = xmltodict.parse(netconf_reply.xml)
 
-        # if there data return from netconf_reply_dict is not null, the operation-state of interface loopback is returned
-        if <!!!REPLACEME with the proper condition!!!>:
-            # extract admin_status and oper_status from netconf_reply_dict
-            admin_status = <!!!REPLACEME!!!>
-            oper_status = <!!!REPLACEME !!!>
+        interface_data = netconf_reply_dict.get('data', {}).get('interfaces-state', {}).get('interface')
+
+        if interface_data:
+            admin_status = interface_data.get('admin-status')
+            oper_status = interface_data.get('oper-status')
+            
             if admin_status == 'up' and oper_status == 'up':
-                return "<!!!REPLACEME with proper message!!!>"
+                return f"Interface loopback {student_id} is enabled"
             elif admin_status == 'down' and oper_status == 'down':
-                return "<!!!REPLACEME with proper message!!!>"
-        else: # no operation-state data
-            return "<!!!REPLACEME with proper message!!!>"
-    except:
-       print("Error!")
+                return f"Interface loopback {student_id} is disabled"
+        else:
+            return f"No Interface loopback {student_id}"
+    except Exception as e:
+       return "Error: " + str(e)
