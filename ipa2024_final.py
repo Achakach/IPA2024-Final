@@ -11,7 +11,7 @@ import os
 import netconf_final
 # --- แก้ไข: เพิ่ม import สำหรับโจทย์ส่วนที่ 2 ---
 import netmiko_final
-# import ansible_final
+import ansible_final
 from requests_toolbelt.multipart.encoder import MultipartEncoder # <-- ต้อง import ตัวนี้
 from dotenv import load_dotenv # <-- เพิ่มเข้ามาเพื่อใช้ .env
 
@@ -85,7 +85,7 @@ while True:
             elif command == "gigabit_status":
                 responseMessage = netmiko_final.gigabit_status() # <-- ต้องมาจาก netmiko_final
             elif command == "showrun":
-                responseMessage = ansible_final.showrun() # <-- ต้องมาจาก ansible_final
+                responseMessage = ansible_final.showrun(MY_STUDENT_ID) # <-- ต้องมาจาก ansible_final
             else:
                 responseMessage = "Error: No command or unknown command"
             

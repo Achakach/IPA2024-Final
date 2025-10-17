@@ -37,7 +37,6 @@ def gigabit_status():
                 return error_msg
 
             for interface_data in result:
-                # 2. ตรวจสอบว่ามี key 'intf' อยู่ใน dictionary หรือไม่ ก่อนเรียกใช้
                 if interface_data['interface'].startswith("GigabitEthernet"):
                     status_text = ""
                     # ตรวจสอบสถานะเพื่อความแม่นยำ
