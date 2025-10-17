@@ -95,7 +95,7 @@ while True:
             if command == "showrun" and "ok=2" in responseMessage:
                 filename = f"show_run_{MY_STUDENT_ID}_CSR1000v.txt" # <-- แก้ไข: ทำให้ชื่อไฟล์เป็นแบบไดนามิก
                 try:
-                    with open(filename, "r") as file_content:
+                    with open(filename, "rb") as file_content:
                         multipart_data = MultipartEncoder(
                             fields={
                                 'roomId': WEBEX_ROOM_ID,
