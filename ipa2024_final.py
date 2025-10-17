@@ -111,10 +111,7 @@ while True:
                         )
                 except FileNotFoundError:
                     responseMessage = f"Error: Ansible ran, but file '{filename}' was not found."
-                    # Fallthrough to send a normal text message
-            
-            # --- แก้ไข: ปรับปรุง Logic การส่งข้อความ ---
-            # ถ้าไม่ใช่ showrun หรือ showrun ล้มเหลว ให้ส่งเป็นข้อความธรรมดา
+
             if not (command == "showrun" and "ok=2" in responseMessage):
                 postData = {"roomId": WEBEX_ROOM_ID, "text": responseMessage}
                 postHTTPHeaders["Content-Type"] = "application/json"

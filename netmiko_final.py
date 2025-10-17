@@ -23,11 +23,11 @@ def gigabit_status():
             
             command = "show ip interface brief"
             result = ssh.send_command(command, use_textfsm=True)
-            print("\n" + "="*20 + " DEBUGGING INFO " + "="*20)
-            print("Type of 'result':", type(result))
-            print("Content of 'result':")
-            pprint(result)
-            print("="*58 + "\n")
+            # print("\n" + "="*20 + " DEBUGGING INFO " + "="*20)
+            # print("Type of 'result':", type(result))
+            # print("Content of 'result':")
+            # pprint(result)
+            # print("="*58 + "\n")
             
             # --- เพิ่มการตรวจสอบข้อมูล ---
             # 1. ตรวจสอบว่าผลลัพธ์ที่ได้เป็น list หรือไม่

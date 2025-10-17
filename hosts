@@ -1,9 +1,7 @@
 [csr]
-# --- FIX: บังคับใช้ libssh (ตัวเลือกเดียวที่เหลือ) ---
 CSR1000v ansible_host=192.168.1.104 ansible_network_cli_ssh_type=libssh
 
 [all:vars]
-# --- ตรวจสอบว่าข้อมูลนี้ครบถ้วน ---
 ansible_user=admin
 ansible_password=cisco
 ansible_become=yes
