@@ -93,7 +93,7 @@ while True:
             postHTTPHeaders = {"Authorization": f"Bearer {ACCESS_TOKEN}"} # <-- แก้ไข: ต้องมี "Bearer "
 
             if command == "showrun" and "ok=2" in responseMessage:
-                filename = f"show_run_{MY_STUDENT_ID}_CSR1KV-Pod1-1.txt" # <-- แก้ไข: ทำให้ชื่อไฟล์เป็นแบบไดนามิก
+                filename = f"show_run_{MY_STUDENT_ID}_CSR1000v.txt" # <-- แก้ไข: ทำให้ชื่อไฟล์เป็นแบบไดนามิก
                 try:
                     with open(filename, "r") as file_content:
                         multipart_data = MultipartEncoder(

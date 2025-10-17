@@ -1,6 +1,6 @@
 import subprocess
 
-#pip install ansible
+#sudo apt install ansible
 #ansible-galaxy collection install cisco.ios
 
 def showrun(student_id, router_name="CSR1000v"):

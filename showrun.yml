@@ -1,20 +1,18 @@
 ---
 - name: Backup running config from CSR router
-  hosts: csr  # ชื่อ group ที่เราจะตั้งในไฟล์ hosts
+  hosts: csr
   gather_facts: no
   connection: network_cli
 
   tasks:
-    # Task ที่ 1: ดึง 'show running-config'
     - name: Show running-config from device
       cisco.ios.ios_command:
         commands:
-          - show running-config
-      register: config  # เก็บผลลัพธ์ไว้ในตัวแปรชื่อ 'config'
+          - show running-config  # <-- ตรวจสอบว่ากลับมาเป็นคำสั่งนี้
+      register: config
 
-    # Task ที่ 2: เซฟผลลัพธ์ลงไฟล์ในเครื่องเรา
     - name: Save running-config to local file
       copy:
         content: "{{ config.stdout[0] }}"
-        dest: "./show_run_{{ MY_STUDENT_ID }}_{{ ROUTER_NAME }}.txt" # ใช้ตัวแปรที่ส่งมาจาก Python
-      delegate_to: localhost # สั่งให้ทำงานบนเครื่องที่รัน Ansible (localhost)
+        dest: "./show_run_{{ MY_STUDENT_ID }}_{{ ROUTER_NAME }}.txt"
+      delegate_to: localhost
