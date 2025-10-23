@@ -1,5 +1,5 @@
 [csr]
-CSR1000v ansible_host=192.168.1.104 ansible_network_cli_ssh_type=libssh
+CSR1000v ansible_host=10.0.15.61 ansible_network_cli_ssh_type=libssh
 
 [all:vars]
 ansible_user=admin
