@@ -8,7 +8,9 @@
     - name: Show running-config from device
       cisco.ios.ios_command:
         commands:
-          - show running-config  # <-- ตรวจสอบว่ากลับมาเป็นคำสั่งนี้
+          - show running-config
+      vars:
+        ansible_command_timeout: 180
       register: config
 
     - name: Save running-config to local file

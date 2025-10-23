@@ -21,7 +21,7 @@ load_dotenv()
 
 # --- แก้ไข: ย้ายค่าคงที่มาไว้รวมกัน ---
 MY_STUDENT_ID = "66070244"
-WEBEX_ROOM_ID = "Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vYmQwODczMTAtNmMyNi0xMWYwLWE1MWMtNzkzZDM2ZjZjM2Zm"
+WEBEX_ROOM_ID = "Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vMTUyYmVkYTAtNmYwNy0xMWYwLWIwY2EtMmIwZWNiYzM3ODFj"
 
 #######################################################################################
 # 2. Assign the Webex access token

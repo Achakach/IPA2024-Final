@@ -8,6 +8,8 @@ def showrun(student_id, router_name="CSR1000v"):
     # read https://www.datacamp.com/tutorial/python-subprocess to learn more about subprocess
     command = [
         "ansible-playbook",
+        "-i",
+        "hosts",
         "showrun.yml",
         "--extra-vars",
         f"MY_STUDENT_ID={student_id}",
