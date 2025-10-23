@@ -1,8 +1,9 @@
-[csr]
-CSR1000v ansible_host=10.0.15.61 ansible_network_cli_ssh_type=paramiko
+[routers]
+CSR1kv ansible_host=10.0.15.61
 
-[all:vars]
+[routers:vars]
 ansible_user=admin
 ansible_password=cisco
 ansible_connection=network_cli
 ansible_network_os=cisco.ios.ios
+ansible_ssh_common_args='-o KexAlgorithms=+diffie-hellman-group14-sha1 -o HostkeyAlgorithms=+ssh-rsa'

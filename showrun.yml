@@ -9,8 +9,6 @@
       cisco.ios.ios_command:
         commands:
           - show running-config
-      vars:
-        ansible_command_timeout: 180
       register: config
 
     - name: Save running-config to local file
