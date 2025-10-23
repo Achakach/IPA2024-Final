@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 4302 bytes
+Current configuration : 4312 bytes
 !
-! Last configuration change at 18:35:29 UTC Thu Oct 23 2025 by NETCONF
+! Last configuration change at 18:41:42 UTC Thu Oct 23 2025 by NETCONF
 !
 version 16.9
 service config
@@ -134,6 +134,7 @@ redundancy
 interface Loopback66070001
  description Managed by IPA2024 Bot - 66070001
  ip address 172.0.1.1 255.255.255.0
+ shutdown
 !
 interface Loopback66070041
  ip address 172.0.41.1 255.255.255.0
