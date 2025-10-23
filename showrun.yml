@@ -1,6 +1,6 @@
 ---
 - name: Backup running config from CSR router
-  hosts: csr
+  hosts: all
   gather_facts: no
   connection: network_cli
 
